@@ -22,13 +22,15 @@ export default function Contact() {
     setStatus("sending");
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      // 🔥 API now points to Vercel serverless function
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
       const data = await res.json();
+
       if (data.success) {
         setStatus("success");
         setForm({ name: "", email: "", message: "" });
@@ -36,7 +38,7 @@ export default function Contact() {
         setStatus("error");
         setErr(data.message || "Something went wrong.");
       }
-    } catch {
+    } catch (error) {
       setStatus("error");
       setErr("Server error. Try again later.");
     }
