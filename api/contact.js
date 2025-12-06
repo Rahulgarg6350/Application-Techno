@@ -21,11 +21,11 @@ export default async function handler(req, res) {
     });
 
     const mailOptions = {
-      from: `"Website Contact Form" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_TO,
       subject: "New Contact Form Message",
       html: `
-        <h2>New Contact Message</h2>
+        <h2>New Message from Contact Form</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Message:</b> ${message}</p>
@@ -34,15 +34,10 @@ export default async function handler(req, res) {
 
     await transporter.sendMail(mailOptions);
 
-    return res.status(200).json({
-      success: true,
-      message: "Message sent successfully!",
-    });
+    return res.status(200).json({ success: true, message: "Message sent successfully!" });
+
   } catch (error) {
     console.error("Email Error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to send message.",
-    });
+    return res.status(500).json({ success: false, message: "Failed to send message." });
   }
 }
