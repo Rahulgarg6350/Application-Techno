@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Website Contact Form" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
       subject: "New Contact Form Message",
       html: `
