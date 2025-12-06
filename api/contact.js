@@ -12,20 +12,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Create transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.EMAIL_USER,  // your email
-        pass: process.env.EMAIL_PASS,  // gmail app password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_TO,       // your receiving email
-      subject: "New Contact Form Message",
+      to: process.env.EMAIL_TO,
+      subject: `New Contact Form Message from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><b>Name:</b> ${name}</p>
@@ -35,14 +35,12 @@ export default async function handler(req, res) {
       `,
     };
 
-    // Send Email
     await transporter.sendMail(mailOptions);
 
     return res.status(200).json({
       success: true,
       message: "Message sent successfully!",
     });
-
   } catch (error) {
     console.error("Email Error:", error);
     return res.status(500).json({
